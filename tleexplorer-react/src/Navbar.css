@@ -1,0 +1,58 @@
+.titleBar {
+    display: grid;
+    grid-template-columns:20%, 60%, 20%;
+    grid-template-areas: "random title loaderRight";
+    background-color: #EA906C;
+    padding: 1%;    
+    margin-top: 1%;
+    margin-left: -1%;
+    margin-right: -1%;
+    margin-bottom: 40px;
+}
+
+#title {
+    grid-area: title;
+    color: #2B2A4C;
+    font-weight: bolder;
+    letter-spacing: 0.02em;
+    font-family: 'Simplifica';
+    font-size: 80px;
+    text-align: center;
+    position: relative;
+}  
+
+.navBar {
+    position: sticky;
+    top: 0;
+    list-style-type: none;
+    margin: -1%;
+    padding: 5px;
+    overflow: hidden;
+    background-color: #2B2A4C;
+    z-index: 1;
+    border: 3px inset #2B2A4C;
+}
+
+.navLink {
+    display: block;
+    float: left;
+    color:  #EEE2DE;
+    text-align: center;
+    padding: 5px 16px;
+    text-decoration: none;
+    font-family: 'Simplifica';
+    font-size: 25px;
+    text-align: center;
+    font-weight: bolder;    
+}
+
+/* Change the link color to #111 (black) on hover */
+.navLink:hover {
+    background-color:  #B31312;
+    border-radius: 5%;
+}
+
+@font-face {
+    font-family: "Simplifica";
+    src: url('simplifica.ttf');
+  }
