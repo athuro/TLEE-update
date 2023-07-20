@@ -208,11 +208,6 @@ function load(status = 1) {
     } 
 }
 
-
-
-///// THIS IS MOSTLY FROM CESIUM & SATELLITE.JS DOCUMENTATION RETROFITTED FOR USE AS MY OBJECT VIEWER /////
-///// Tutorial: https://dev.to/omar4ur/create-a-satellite-tracker-from-scratch-in-30-lines-of-javascript-32gk /////
-///// You can generally distinguish things I wrote by the use of 'let' /////
 function initView () {
     let viewer = new Cesium.Viewer('cesiumContainer', {
         imageryProvider: new Cesium.TileMapServiceImageryProvider({
@@ -254,7 +249,7 @@ function astrogator (sat, numPaths = 1) {
     // let gmst = satellite.gstime(date);
     // let position = satellite.eciToGeodetic(positionAndVelocity.position, gmst);
     
-    // Add point to globe
+    // // Add point to globe
     // satellitePoint = viewer.entities.add({
     //     position: Cesium.Cartesian3.fromRadians(
     //       position.longitude, position.latitude, position.height * 1000
@@ -264,14 +259,15 @@ function astrogator (sat, numPaths = 1) {
     //   });
     // satellitePoint.label.scale = .5;
     // satellitePoint.label.show = true;
+    // viewer.trackedEntity = satellitePoint
 
 
     ///// START OF TUTORIAL CODE /////
-    // Add single orbit track
+    // // Add single orbit track
     positionsOverTime = []; //clear position array
     const start = Cesium.JulianDate.fromDate(new Date());
     const totalSeconds = Math.floor(60 * Number(sat.getT()))*numPaths; //1 period multiplied by the number of orbits requested
-    const timestepInSeconds = 100;
+    const timestepInSeconds = 10;
     for (let i = 0; i < totalSeconds; i+= timestepInSeconds) {
         const time = Cesium.JulianDate.addSeconds(start, i, new Cesium.JulianDate());
         const jsDate = Cesium.JulianDate.toDate(time);
@@ -289,6 +285,9 @@ function astrogator (sat, numPaths = 1) {
             width: 1,
         }
     });
+   
+
+    
 
     // Add object animation over one orbit
     positionsOverTime = new Cesium.SampledPositionProperty();
@@ -303,10 +302,29 @@ function astrogator (sat, numPaths = 1) {
     } 
     satellitePointAnimation = viewer.entities.add({
         position: positionsOverTime,
-        point: { pixelSize: 8, color: currentColor },
+        model: {
+            uri: "../styles/ISS-(ZARYA).glb",
+          },
         label: {text: `${sat.getName()}`} //added a label for clarity
     });
+
+    const wyoming = viewer.entities.add({
+        polygon: {
+          hierarchy: Cesium.Cartesian3.fromDegreesArray([
+            -109.080842, 45.002073, -105.91517, 45.002073, -104.058488, 44.996596,
+            -104.053011, 43.002989, -104.053011, 41.003906, -105.728954, 40.998429,
+            -107.919731, 41.003906, -109.04798, 40.998429, -111.047063, 40.998429,
+            -111.047063, 42.000709, -111.047063, 44.476286, -111.05254, 45.002073,
+          ]),
+          height: 0,
+          material: Cesium.Color.RED.withAlpha(0.5),
+          outline: true,
+          outlineColor: Cesium.Color.BLACK,
+        },
+      });
+      
     satellitePointAnimation.label.scale = .5;
     satellitePointAnimation.label.show = true;
+    viewer.trackedEntity = satellitePointAnimation
 }
 
