@@ -300,11 +300,22 @@ function astrogator (sat, numPaths = 1) {
         const position = Cesium.Cartesian3.fromRadians(p.longitude, p.latitude, p.height * 1000);
         positionsOverTime.addSample(time, position);
     } 
+
+    const position = Cesium.Cartesian3.fromDegrees(-123.0744619, 44.0503706);
+    const heading = Cesium.Math.toRadians(45.0);
+    const pitch = Cesium.Math.toRadians(15.0);
+    const roll = Cesium.Math.toRadians(0.0);
+    const orientation = Cesium.Transforms.headingPitchRollQuaternion(
+        position,
+        new Cesium.HeadingPitchRoll(heading, pitch, roll)
+    );
+
     satellitePointAnimation = viewer.entities.add({
         position: positionsOverTime,
         model: {
-            uri: "../styles/ISS-(ZARYA).glb",
+            uri: "../styles/iss.glb",
           },
+        orientation: orientation,
         label: {text: `${sat.getName()}`} //added a label for clarity
     });
 
@@ -327,4 +338,6 @@ function astrogator (sat, numPaths = 1) {
     satellitePointAnimation.label.show = true;
     viewer.trackedEntity = satellitePointAnimation
 }
+
+
 
